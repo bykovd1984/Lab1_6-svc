@@ -9,11 +9,11 @@ namespace Lab1_6.Data.Migrations
         {
             Console.WriteLine("Hello World!");
 
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false)
-                .Build();
+            //var config = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json", false)
+            //    .Build();
 
-            var connStr = config.GetSection("UsersDB").Value;
+            //var connStr = config.GetSection("UsersDB").Value;
         }
     }
 }
