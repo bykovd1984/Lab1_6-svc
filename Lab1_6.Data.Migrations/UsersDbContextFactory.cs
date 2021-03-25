@@ -24,7 +24,7 @@ namespace Lab1_6.Data
                 .AddJsonFile("appsettings.json", false)
                 .Build();
 
-            var connStr = config.GetConnectionString("UsersDB");
+            var connStr = config.GetSection("UsersDB").Value;
 
             if (string.IsNullOrEmpty(connStr))
                 throw new InvalidOperationException("Connection string for UsersDbContext is empty.");
