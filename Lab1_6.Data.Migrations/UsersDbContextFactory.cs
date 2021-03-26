@@ -22,9 +22,15 @@ namespace Lab1_6.Data
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false)
+                .AddEnvironmentVariables()
                 .Build();
 
-            var connStr = config.GetSection("UsersDB").Value;
+            var connStr = config.GetSection("UsersDB")?.Value;
+
+            var pass = config.GetSection("USERS_DB_PASSWORD")?.Value;
+
+            if (!string.IsNullOrEmpty(pass))
+                connStr = connStr.Replace("{passwrord_placeholder}", pass);
 
             if (string.IsNullOrEmpty(connStr))
                 throw new InvalidOperationException("Connection string for UsersDbContext is empty.");

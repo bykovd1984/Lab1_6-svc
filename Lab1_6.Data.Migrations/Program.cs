@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace Lab1_6.Data.Migrations
@@ -8,19 +9,25 @@ namespace Lab1_6.Data.Migrations
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            try
+            {
+                var dbContext = new UsersDbContextFactory().CreateDbContext(args);
 
+                var pendingMigrations = dbContext.Database.GetPendingMigrations();
 
+                Console.WriteLine($"Pending migrations count: {pendingMigrations.Count()}");
 
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false)
-                .Build();
+                if (pendingMigrations.Count() > 0)
+                {
+                    dbContext.Database.Migrate();
 
-            var connStr = config.GetSection("UsersDB").Value;
-
-            Console.WriteLine(connStr);
-
-            Thread.Sleep(500000);
+                    Console.WriteLine($"Migrations applied.");
+                }
+            } 
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
