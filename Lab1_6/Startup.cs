@@ -25,9 +25,12 @@ namespace Lab1_6
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddControllersAsServices();
 
-            var connStr = Configuration.GetConnectionString("UsersDB");
+            var connStr = Configuration.GetSection("UsersDB").Value;
+
             services
                 .AddEntityFrameworkNpgsql()
                 .AddDbContext<UsersDbContext>(options => options.UseNpgsql(connStr));
@@ -43,10 +46,9 @@ namespace Lab1_6
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+
                 endpoints.MapControllers();
             });
         }
