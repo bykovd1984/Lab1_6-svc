@@ -25,6 +25,11 @@ namespace Lab1_6.Data
                 .AddEnvironmentVariables()
                 .Build();
 
+            return GetConnStr(config);
+        }
+
+        public static string GetConnStr(IConfiguration config)
+        {
             var connStr = config.GetSection("UsersDB")?.Value;
 
             var pass = config.GetSection("USERS_DB_PASSWORD")?.Value;

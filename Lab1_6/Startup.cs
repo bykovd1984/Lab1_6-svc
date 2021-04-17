@@ -29,7 +29,7 @@ namespace Lab1_6
                 .AddControllers()
                 .AddControllersAsServices();
 
-            var connStr = Configuration.GetSection("UsersDB").Value;
+            var connStr = UsersDbContextFactory.GetConnStr(Configuration);
 
             services
                 .AddEntityFrameworkNpgsql()

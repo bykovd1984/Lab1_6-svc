@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Lab1_6.Data.Migrations\Lab1_6.Data.Migrations.csproj" />
     <ProjectReference Include="..\Lab1_6.Data\Lab1_6.Data.csproj" />
   </ItemGroup>
 
