@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Prometheus;
 
 namespace Lab1_6
 {
@@ -46,10 +47,13 @@ namespace Lab1_6
 
             app.UseRouting();
 
+            app.UseHttpMetrics();
+
             app.UseEndpoints(endpoints =>
             {
-
                 endpoints.MapControllers();
+
+                endpoints.MapMetrics();
             });
         }
     }
