@@ -9,12 +9,16 @@ namespace Lab1_6.Data
             : base(options) { }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>()
+                .HasKey(u => u.UserName);
+
+            modelBuilder.Entity<Profile>()
                 .HasKey(u => u.UserName);
         }
     }
