@@ -30,6 +30,9 @@ namespace Lab1_6.Controllers
 
             userName = userName.Trim();
 
+            if (User.Identity?.Name != userName)
+                return Forbid();
+
             var profile = await _usersDbContext.Profiles.FirstOrDefaultAsync(p => p.UserName == userName);
 
             if(profile == null)
@@ -55,6 +58,9 @@ namespace Lab1_6.Controllers
         public async Task<ActionResult<ProfileModel>> Get(string userName)
         {
             userName = userName.Trim();
+
+            if (User.Identity?.Name != userName)
+                return Forbid();
 
             var profile = await _usersDbContext.Profiles.FirstOrDefaultAsync(u => u.UserName == userName);
             
