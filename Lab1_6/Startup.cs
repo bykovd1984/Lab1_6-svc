@@ -1,11 +1,15 @@
 using Lab1_6.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Prometheus;
+using System;
+using System.Threading.Tasks;
 
 namespace Lab1_6
 {
@@ -30,6 +34,29 @@ namespace Lab1_6
                 .AddControllers()
                 .AddControllersAsServices();
 
+            services
+                .AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:5001";
+                    options.Audience = "api1.6.resource";
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
+            services
+                .AddAuthorization(options =>
+                {
+                    options.AddPolicy("ApiScope", policy =>
+                    {
+                        policy.RequireAuthenticatedUser();
+                        policy.RequireClaim("scope", "ProfileApi");
+                    });
+                });
+
             var connStr = UsersDbContextFactory.GetConnStr(Configuration);
 
             services
@@ -49,12 +76,31 @@ namespace Lab1_6
 
             app.UseHttpMetrics();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
 
                 endpoints.MapMetrics();
             });
+        }
+    }
+
+    public class RequestResponseLoggingMiddleware
+    {
+        private readonly RequestDelegate _next;
+        public RequestResponseLoggingMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+        public Task Invoke(HttpContext context)
+        {
+            Console.WriteLine(context.Request.QueryString);
+            return _next.Invoke(context);
         }
     }
 }

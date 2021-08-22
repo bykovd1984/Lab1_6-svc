@@ -1,5 +1,6 @@
 ﻿using Lab1_6.Data;
 using Lab1_6.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,7 @@ namespace Lab1_6.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ProfilesController : Controller
     {
         UsersDbContext _usersDbContext;
