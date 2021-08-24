@@ -45,15 +45,15 @@ namespace IdentityServerAspNetIdentity
 
                 var host = CreateHostBuilder(args).Build();
 
-                if (seed)
-                {
+                //if (seed)
+                //{
                     Log.Information("Seeding database...");
                     var config = host.Services.GetRequiredService<IConfiguration>();
                     var connectionString = config.GetConnectionString("DefaultConnection");
                     SeedData.EnsureSeedData(connectionString);
                     Log.Information("Done seeding database.");
-                    return 0;
-                }
+                //    return 0;
+                //}
 
                 Log.Information("Starting host...");
                 host.Run();
@@ -75,7 +75,9 @@ namespace IdentityServerAspNetIdentity
                 .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                        .UseUrls("http://*:5002")
+                        .UseStartup<Startup>();
                 });
     }
 }

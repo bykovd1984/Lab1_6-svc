@@ -39,7 +39,7 @@ namespace Lab1_6
                 .AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:5001";
+                    options.Authority = Configuration.GetValue<string>("authUrl");
                     options.Audience = "api1.6.resource";
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
