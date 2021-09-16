@@ -1,11 +1,10 @@
 ﻿using Confluent.Kafka;
-using Confluent.SchemaRegistry.Serdes;
+using Lab1_6.Models;
 using Lab1_6.Order.Svc.Messages;
+using Lab1_6.Proto;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,16 +13,19 @@ namespace Lab1_6.Order.Svc
     public class ProducerSubscription : IHostedService
     {
         ILogger<ProducerSubscription> _logger;
-        ProducerConfig _producerConfig = new ProducerConfig
-        {
-            BootstrapServers = "127.0.0.1:30002",
-            SecurityProtocol = SecurityProtocol.Plaintext
-        };
+        ProducerConfig _producerConfig;
         IProducer<Null, MessageModel> _producer;
+        AppConfigs _config;
 
-        public ProducerSubscription(ILogger<ProducerSubscription> logger)
+        public ProducerSubscription(ILogger<ProducerSubscription> logger, AppConfigs config)
         {
             _logger = logger;
+            _config = config;
+            _producerConfig = new ProducerConfig
+            {
+                BootstrapServers = _config.Kafka,
+                SecurityProtocol = SecurityProtocol.Plaintext
+            };
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

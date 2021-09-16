@@ -1,12 +1,8 @@
 ﻿using Confluent.Kafka;
 using Google.Protobuf;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Lab1_6.Order.Svc.Messages
+namespace Lab1_6.Proto
 {
     public class ProtoSerializer<T> : ISerializer<T> where T : Google.Protobuf.IMessage<T>
     {

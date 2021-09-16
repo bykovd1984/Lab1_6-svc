@@ -1,14 +1,12 @@
 ﻿using Confluent.Kafka;
+using Lab1_6.Models;
 using Lab1_6.Order.Svc.Messages;
+using Lab1_6.Proto;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using Confluent.SchemaRegistry.Serdes;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Confluent.Kafka.SyncOverAsync;
 
 namespace Lab1_6.Order.Svc
 {
@@ -16,18 +14,21 @@ namespace Lab1_6.Order.Svc
     {
         ILogger<ConsumerSubscription> _logger;
 
-        ConsumerConfig _consumerConfig = new ConsumerConfig()
-        {
-            BootstrapServers = "127.0.0.1:30002",
-            GroupId = "OrderSvc1",
-            AutoOffsetReset = AutoOffsetReset.Earliest,
-            
-        };
+        ConsumerConfig _consumerConfig;
         IConsumer<Ignore, MessageModel> _consumer;
+        AppConfigs _config;
 
-        public ConsumerSubscription(ILogger<ConsumerSubscription> logger)
+        public ConsumerSubscription(ILogger<ConsumerSubscription> logger, AppConfigs config)
         {
             _logger = logger;
+            _config = config;
+            _consumerConfig = new ConsumerConfig()
+            {
+                BootstrapServers = _config.Kafka,
+                GroupId = "OrderSvc1",
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+
+            };
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -62,8 +63,8 @@ namespace Lab1_6.Order.Svc
                     _consumer.Close();
 
                     _logger.LogDebug($"ConsumerSubscription finished.");
-            }
-        });
+                }
+            });
 
             return Task.CompletedTask;
         }
