@@ -35,7 +35,7 @@ namespace Lab1_6.Order.Svc
         {
             Task.Run(() =>
             {
-                _logger.LogDebug($"ConsumerSubscription started.");
+                _logger.LogDebug($"ConsumerSubscription started. Kafka: {_config.Kafka}.");
 
                 using (_consumer = new ConsumerBuilder<Ignore, MessageModel>(_consumerConfig)
                     .SetValueDeserializer(

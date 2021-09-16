@@ -32,7 +32,7 @@ namespace Lab1_6.Order.Svc
         {
             Task.Run(async () =>
             {
-                _logger.LogDebug($"ProducerSubscription started.");
+                _logger.LogDebug($"ProducerSubscription started. Kafka: {_config.Kafka}.");
                 var number = 1;
                 using (_producer = new ProducerBuilder<Null, MessageModel>(_producerConfig)
                     .SetValueSerializer(new ProtoSerializer<MessageModel>()).Build())
