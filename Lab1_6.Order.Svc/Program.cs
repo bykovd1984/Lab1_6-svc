@@ -1,10 +1,14 @@
-﻿using Confluent.Kafka;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Lab1_6.Models;
+using Lab1_6.Kafka;
+using Lab1_6.Order.Svc.Messages;
+using Lab1_6.Kafka.Contracts;
+using Lab1_6.Proto;
 
 namespace Lab1_6.Order.Svc
 {
@@ -29,10 +33,15 @@ namespace Lab1_6.Order.Svc
                 })
                 .ConfigureServices((_, services) =>
                 {
-                    services
-                        .AddHostedService<ProducerSubscription>()
-                        .AddHostedService<ConsumerSubscription>()
-                        ;
+                    var config = AppConfigs.Init(_.Configuration);
+
+                services
+                    .AddSingleton(config)
+                    .AddTransient(typeof(KafkaProducer<>))
+                    .AddTransient<KafkaSubscriber<MessageModel>, ConsumerSubscriber>()
+                    .AddHostedService<ProducerHosterService>()
+                    .AddHostedService(sp => KafkaBaseSubscriber.Create("OrderSvc", "orderCreated1", MessageModel.Parser, sp));
+                        
                 });
         }
     }

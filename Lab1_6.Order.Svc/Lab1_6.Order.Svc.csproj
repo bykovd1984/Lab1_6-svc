@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Confluent.Kafka" Version="1.7.0" />
+    <PackageReference Include="Confluent.Kafka" Version="1.8.0" />
     <PackageReference Include="Confluent.SchemaRegistry" Version="1.7.0" />
     <PackageReference Include="Confluent.SchemaRegistry.Serdes.Protobuf" Version="1.7.0" />
     <PackageReference Include="Google.Protobuf" Version="3.17.3" />
@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lab1_6.Config\Lab1_6.Config.csproj" />
+    <ProjectReference Include="..\Lab1_6.Kafka\Lab1_6.Kafka.csproj" />
     <ProjectReference Include="..\Lab1_6.Proto\Lab1_6.Proto.csproj" />
   </ItemGroup>
 

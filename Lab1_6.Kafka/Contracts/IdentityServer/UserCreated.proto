@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Order.Svc.Messages";
+
+message UserCreated {
+    string UserName = 1;
+}  

@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Lab1_6.Kafka;
 using Lab1_6.Models;
 using Lab1_6.Order.Svc.Messages;
 using Lab1_6.Proto;
@@ -10,17 +11,18 @@ using System.Threading.Tasks;
 
 namespace Lab1_6.Order.Svc
 {
-    public class ProducerSubscription : IHostedService
+    public class ProducerHosterService : IHostedService
     {
-        ILogger<ProducerSubscription> _logger;
+        ILogger<ProducerHosterService> _logger;
         ProducerConfig _producerConfig;
-        IProducer<Null, MessageModel> _producer;
+        KafkaProducer<MessageModel> _producer;
         AppConfigs _config;
 
-        public ProducerSubscription(ILogger<ProducerSubscription> logger, AppConfigs config)
+        public ProducerHosterService(ILogger<ProducerHosterService> logger, AppConfigs config, KafkaProducer<MessageModel> producer)
         {
             _logger = logger;
             _config = config;
+            _producer = producer;
             _producerConfig = new ProducerConfig
             {
                 BootstrapServers = _config.Kafka,
@@ -34,10 +36,8 @@ namespace Lab1_6.Order.Svc
             {
                 _logger.LogDebug($"ProducerSubscription started. Kafka: {_config.Kafka}.");
                 var number = 1;
-                using (_producer = new ProducerBuilder<Null, MessageModel>(_producerConfig)
-                    .SetValueSerializer(new ProtoSerializer<MessageModel>()).Build())
-                {
-                    while (!cancellationToken.IsCancellationRequested)
+
+                while (!cancellationToken.IsCancellationRequested)
                     {
                         var delayMs = new Random().Next(3000);
 
@@ -55,9 +55,7 @@ namespace Lab1_6.Order.Svc
 
                             try
                             {
-                                var dr = await _producer
-                                    .ProduceAsync("orderCreated1", new Message<Null, MessageModel> { Value = messageModel });
-                                _logger.LogDebug($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+                                await _producer.Send("orderCreated1", messageModel);
                             }
                             catch (ProduceException<Null, string> e)
                             {
@@ -65,7 +63,6 @@ namespace Lab1_6.Order.Svc
                             }
                         }
                     }
-                }
 
                 _logger.LogDebug($"ProducerSubscription finished.");
             });
@@ -74,7 +71,6 @@ namespace Lab1_6.Order.Svc
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogDebug($"ProducerSubscription stopped.");
-            _producer.Dispose();
             return Task.CompletedTask;
         }
     }
