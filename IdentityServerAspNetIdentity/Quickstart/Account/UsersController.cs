@@ -1,4 +1,7 @@
 ﻿using IdentityServerAspNetIdentity.Models;
+using Lab1_6.Kafka;
+using Lab1_6.Kafka.Contracts;
+using Lab1_6.Order.Svc.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +15,14 @@ namespace IdentityServerAspNetIdentity.Quickstart.Account
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-    
-        public UsersController(UserManager<ApplicationUser> userManager) 
+        private readonly KafkaProducer<UserCreated> _kafkaProducer;
+
+        public UsersController(
+            UserManager<ApplicationUser> userManager,
+            KafkaProducer<UserCreated> kafkaProducer) 
         {
             _userManager = userManager;
+            _kafkaProducer = kafkaProducer;
         }
 
         [AllowAnonymous]
@@ -27,7 +34,11 @@ namespace IdentityServerAspNetIdentity.Quickstart.Account
                 UserName = inputUser.Login
             };
 
-            return await _userManager.CreateAsync(user, inputUser.Password);
+            var result = await _userManager.CreateAsync(user, inputUser.Password);
+
+            await _kafkaProducer.Send(Topics.UserCreated, new UserCreated() { UserName = user.UserName });
+
+            return result;
         }
 
         public class User

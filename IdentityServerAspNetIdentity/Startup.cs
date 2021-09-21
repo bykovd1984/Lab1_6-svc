@@ -5,6 +5,8 @@
 using IdentityServer4;
 using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
+using Lab1_6.Kafka;
+using Lab1_6.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +30,13 @@ namespace IdentityServerAspNetIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = AppConfigs.Init(Configuration);
+
             services.AddControllersWithViews();
+
+            services
+                .AddSingleton(config)
+                .AddTransient(typeof(KafkaProducer<>));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
