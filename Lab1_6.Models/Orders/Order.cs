@@ -1,4 +1,4 @@
-﻿namespace Lab1_6.Models.Order
+﻿namespace Lab1_6.Models.Orders
 {
     public class Order
     {

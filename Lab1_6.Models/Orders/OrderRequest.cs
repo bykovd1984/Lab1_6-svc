@@ -1,5 +1,5 @@
 ﻿
-namespace Lab1_6.Models.Order
+namespace Lab1_6.Models.Orders
 {
     public class OrderRequest
     {
@@ -7,6 +7,6 @@ namespace Lab1_6.Models.Order
 
         public Order Order { get; set; }
 
-        public int RequestId { get; set; }
+        public string RequestId { get; set; }
     }
 }

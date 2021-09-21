@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Lab1_6.Proto\Lab1_6.Proto.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\Billing\" />
-  </ItemGroup>
-
 </Project>

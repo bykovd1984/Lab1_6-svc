@@ -1,4 +1,4 @@
-﻿using Lab1_6.Billing.Svc.Handlers;
+﻿using Lab1_6.Billing.Svc.Subscribers;
 using Lab1_6.Data;
 using Lab1_6.Kafka;
 using Lab1_6.Models;

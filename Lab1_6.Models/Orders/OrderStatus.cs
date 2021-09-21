@@ -1,11 +1,11 @@
-﻿namespace Lab1_6.Models.Order
+﻿namespace Lab1_6.Models.Orders
 {
     public enum OrderStatus
     {
         PendingWarehouseCommit,
         PendingDeliveryCommit,
         PendingBillingCommit,
-        Created,
+        Creating,
         Cancelled
     }
 }

@@ -1,4 +1,6 @@
 using Lab1_6.Data;
+using Lab1_6.Kafka;
+using Lab1_6.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +33,12 @@ namespace Lab1_6
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = AppConfigs.Init(Configuration);
+
+            services
+                .AddSingleton(config)
+                .AddTransient(typeof(KafkaProducer<>));
+
             services
                 .AddControllers()
                 .AddControllersAsServices();

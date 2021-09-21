@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Kafka.Contracts.Orders";
+
+message CreateOrder {
+    string UserName = 1;
+    string RequestId = 2;
+    int32 Sum = 3;
+}  

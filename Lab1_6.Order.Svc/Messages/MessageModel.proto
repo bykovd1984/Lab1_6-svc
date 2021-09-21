@@ -1,8 +1,0 @@
-﻿syntax = "proto3";
-
-option csharp_namespace = "Lab1_6.Order.Svc.Messages";
-
-message MessageModel {
-    int32 number = 1;
-    string delay = 2;
-}  

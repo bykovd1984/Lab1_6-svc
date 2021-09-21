@@ -1,6 +1,6 @@
 ﻿using Lab1_6.Models;
 using Lab1_6.Models.Billing;
-using Lab1_6.Models.Order;
+using Lab1_6.Models.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab1_6.Data
@@ -13,6 +13,7 @@ namespace Lab1_6.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderRequest> OrderRequests { get; set; }
         public DbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

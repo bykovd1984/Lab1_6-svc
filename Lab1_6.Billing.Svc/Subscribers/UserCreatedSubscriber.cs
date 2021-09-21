@@ -2,13 +2,13 @@
 using Lab1_6.Data;
 using Lab1_6.Kafka;
 using Lab1_6.Kafka.Contracts;
+using Lab1_6.Kafka.Contracts.IdentityServer;
 using Lab1_6.Models;
 using Lab1_6.Models.Billing;
-using Lab1_6.Order.Svc.Messages;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Lab1_6.Billing.Svc.Handlers
+namespace Lab1_6.Billing.Svc.Subscribers
 {
     public class UserCreatedSubscriber : KafkaSubscriber<UserCreated>
     {
@@ -25,7 +25,7 @@ namespace Lab1_6.Billing.Svc.Handlers
 
         public override string GroupId => "BillingSvc";
 
-        public override string Topic => Topics.UserCreated;
+        public override string Topic => Topics.IdentityServer_UserCreated;
 
         public override MessageParser<UserCreated> Parser => UserCreated.Parser;
 

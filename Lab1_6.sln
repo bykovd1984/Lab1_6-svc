@@ -19,15 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerAspNetIdentity", "IdentityServerAspNetIdentity\IdentityServerAspNetIdentity.csproj", "{7491592F-8299-4768-8B1B-75809E56F6AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.Order.Svc", "Lab1_6.Order.Svc\Lab1_6.Order.Svc.csproj", "{AA30A7FF-0739-433D-AAE3-18C987C1CBF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.OrderSvc", "Lab1_6.Order.Svc\Lab1_6.OrderSvc.csproj", "{AA30A7FF-0739-433D-AAE3-18C987C1CBF7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.Billing.Svc", "Lab1_6.Billing.Svc\Lab1_6.Billing.Svc.csproj", "{BE7D382B-C9DD-43A9-A829-413B5FD9F143}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.Proto", "Lab1_6.Proto\Lab1_6.Proto.csproj", "{ABFF346C-D831-425F-B8DC-E2E326591529}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1_6.Config", "Lab1_6.Config\Lab1_6.Config.csproj", "{EAC4A98B-CBB3-4D78-9A0B-112C29A3ABCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.Config", "Lab1_6.Config\Lab1_6.Config.csproj", "{EAC4A98B-CBB3-4D78-9A0B-112C29A3ABCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1_6.Kafka", "Lab1_6.Kafka\Lab1_6.Kafka.csproj", "{5FA90F4A-3743-4F37-98AB-21404AE82782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab1_6.Kafka", "Lab1_6.Kafka\Lab1_6.Kafka.csproj", "{5FA90F4A-3743-4F37-98AB-21404AE82782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

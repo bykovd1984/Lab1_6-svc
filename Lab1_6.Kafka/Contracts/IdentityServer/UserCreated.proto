@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Lab1_6.Order.Svc.Messages";
+option csharp_namespace = "Lab1_6.Kafka.Contracts.IdentityServer";
 
 message UserCreated {
     string UserName = 1;

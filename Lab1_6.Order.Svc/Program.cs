@@ -1,24 +1,22 @@
-﻿using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Lab1_6.Models;
+﻿using Lab1_6.Data;
 using Lab1_6.Kafka;
-using Lab1_6.Order.Svc.Messages;
-using Lab1_6.Kafka.Contracts;
-using Lab1_6.Proto;
+using Lab1_6.Models;
+using Lab1_6.OrderSvc.Subscribers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
-namespace Lab1_6.Order.Svc
+namespace Lab1_6.OrderSvc
 {
     class Program
     {
-        static Task Main(string[] args)
+        static async Task Main(string[] args)
         {
             using IHost host = CreateHostBuilder(args).Build();
 
-            return host.RunAsync();
+            await host.RunAsync();
         }
 
         static IHostBuilder CreateHostBuilder(string[] args)
@@ -35,13 +33,12 @@ namespace Lab1_6.Order.Svc
                 {
                     var config = AppConfigs.Init(_.Configuration);
 
-                services
-                    .AddSingleton(config)
-                    .AddTransient(typeof(KafkaProducer<>))
-                    .AddTransient<KafkaSubscriber<MessageModel>, ConsumerSubscriber>()
-                    .AddHostedService<ProducerHosterService>()
-                    .AddHostedService(sp => KafkaBaseSubscriber.Create("OrderSvc", "orderCreated1", MessageModel.Parser, sp));
-                        
+                    services
+                        .AddSingleton(config)
+                        .AddEntityFrameworkNpgsql()
+                        .AddDbContext<UsersDbContext>(options => options.UseNpgsql(config.UsersDB))
+                        .AddScoped(typeof(KafkaProducer<>))
+                        .AddHostedService<CreateOrderSubscriber>();
                 });
         }
     }

@@ -1,13 +1,10 @@
 ﻿using IdentityServerAspNetIdentity.Models;
 using Lab1_6.Kafka;
 using Lab1_6.Kafka.Contracts;
-using Lab1_6.Order.Svc.Messages;
+using Lab1_6.Kafka.Contracts.IdentityServer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Quickstart.Account
@@ -36,7 +33,7 @@ namespace IdentityServerAspNetIdentity.Quickstart.Account
 
             var result = await _userManager.CreateAsync(user, inputUser.Password);
 
-            await _kafkaProducer.Send(Topics.UserCreated, new UserCreated() { UserName = user.UserName });
+            await _kafkaProducer.Send(Topics.IdentityServer_UserCreated, new UserCreated() { UserName = user.UserName });
 
             return result;
         }
