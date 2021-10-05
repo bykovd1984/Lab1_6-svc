@@ -6,6 +6,7 @@
         PendingDeliveryCommit,
         PendingBillingCommit,
         Creating,
-        Cancelled
+        Cancelled,
+        Created
     }
 }

@@ -38,7 +38,7 @@ namespace Lab1_6.Kafka
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(async () =>
+            new Thread(async () =>
             {
                 _logger.LogDebug($"{typeof(T)} started. Kafka: {_config.Kafka}.");
 
@@ -46,7 +46,7 @@ namespace Lab1_6.Kafka
                     .SetValueDeserializer(
                         new ProtoDeserializer<T>((bytes, isNull, context) => Parser.ParseFrom(bytes)))
                     .SetErrorHandler(
-                        (consumer, error) => { _logger.LogError($"{typeof(T)} consume error: {error}"); })
+                        (consumer, error) => { _logger.LogError($"{GetType()} \t consume error: {error}"); })
                     .Build())
                 {
                     _consumer.Subscribe(Topic);
@@ -58,9 +58,11 @@ namespace Lab1_6.Kafka
                         {
                             var consumeResult = _consumer.Consume(cancellationToken);
 
-                            await ProcessMessage(consumeResult.Value);
+                            _logger.LogDebug($"{GetType()} \t Message recieved '{Topic}' '{GroupId}' ({consumeResult.Partition}:{consumeResult.Offset}): {consumeResult.Message.Value}");
+                      
+                            await ProcessMessage(consumeResult.Message.Value);
 
-                            _logger.LogDebug($"{typeof(T)}Message '{i++}' recieved: {consumeResult.Value}");
+                            _logger.LogDebug($"{GetType()} \t Message processed ({consumeResult.Partition}:{consumeResult.Offset}): {consumeResult.Message.Value}");
                         }
                         catch (Exception e)
                         {
@@ -70,9 +72,12 @@ namespace Lab1_6.Kafka
 
                     _consumer.Close();
 
-                    _logger.LogDebug($"ConsumerSubscription finished.");
+                    _logger.LogDebug($"{GetType()} \t ConsumerSubscription finished.");
                 }
-            });
+            })
+            .Start();
+
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

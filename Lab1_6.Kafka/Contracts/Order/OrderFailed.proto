@@ -1,0 +1,10 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Kafka.Contracts.Orders";
+
+message OrderFailed {
+    string UserName = 1;
+    int32 Sum = 2;
+    int32 OrderId = 3;
+    string Reason = 4;
+}  

@@ -1,0 +1,9 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Kafka.Contracts.Billing";
+
+message ChargeFailed {
+    int32 OrderId = 1;
+    int32 RequestedSum = 2;
+    int32 CurrentSum = 3;
+}  

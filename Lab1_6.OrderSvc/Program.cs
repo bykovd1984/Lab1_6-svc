@@ -38,6 +38,8 @@ namespace Lab1_6.OrderSvc
                         .AddEntityFrameworkNpgsql()
                         .AddDbContext<UsersDbContext>(options => options.UseNpgsql(config.UsersDB))
                         .AddScoped(typeof(KafkaProducer<>))
+                        .AddHostedService<ChargedSubscriber>()
+                        .AddHostedService<ChargeFailedSubscriber>()
                         .AddHostedService<CreateOrderSubscriber>();
                 });
         }

@@ -33,7 +33,8 @@ namespace IdentityServerAspNetIdentity.Quickstart.Account
 
             var result = await _userManager.CreateAsync(user, inputUser.Password);
 
-            await _kafkaProducer.Send(Topics.IdentityServer_UserCreated, new UserCreated() { UserName = user.UserName });
+            if(result.Succeeded)
+                await _kafkaProducer.Send(Topics.IdentityServer_UserCreated, new UserCreated() { UserName = user.UserName });
 
             return result;
         }

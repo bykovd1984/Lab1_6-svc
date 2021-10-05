@@ -8,7 +8,7 @@ using Lab1_6.Models.Billing;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Lab1_6.Billing.Svc.Subscribers
+namespace Lab1_6.BillingSvc.Subscribers
 {
     public class UserCreatedSubscriber : KafkaSubscriber<UserCreated>
     {

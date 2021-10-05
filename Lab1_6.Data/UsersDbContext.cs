@@ -1,5 +1,6 @@
 ﻿using Lab1_6.Models;
 using Lab1_6.Models.Billing;
+using Lab1_6.Models.Notifications;
 using Lab1_6.Models.Orders;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace Lab1_6.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderRequest> OrderRequests { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<EmailNotification> EmailNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,9 +42,15 @@ namespace Lab1_6.Data
 
             modelBuilder.Entity<Account>()
                 .HasKey(a => a.UserName);
+            modelBuilder.Entity<Account>()
+                .Property(a => a.Timestamp)
+                .IsRowVersion();
 
             modelBuilder.Entity<Order>()
                 .HasKey(o => o.Id);
+            modelBuilder.Entity<Order>()
+                .Property(a => a.Timestamp)
+                .IsRowVersion();
         }
     }
 }

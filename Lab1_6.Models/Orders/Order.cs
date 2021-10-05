@@ -9,5 +9,7 @@
         public int Sum { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }

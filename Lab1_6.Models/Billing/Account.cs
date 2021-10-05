@@ -5,5 +5,7 @@
         public string UserName { get; set; }
 
         public int Deposit { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }

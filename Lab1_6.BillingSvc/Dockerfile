@@ -6,9 +6,9 @@ WORKDIR /src
 
 COPY ./  ./
 
-RUN dotnet publish "Lab1_6.Order.Svc/Lab1_6.Order.Svc.csproj" --output /app/ --configuration Release
+RUN dotnet publish "Lab1_6.OrderSvc/Lab1_6.OrderSvc.csproj" --output /app/ --configuration Release
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "Lab1_6.Order.Svc.dll"]
+ENTRYPOINT ["dotnet", "Lab1_6.OrderSvc.dll"]

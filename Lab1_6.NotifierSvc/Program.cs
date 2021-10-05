@@ -1,14 +1,14 @@
-﻿using Lab1_6.Billing.Svc.Subscribers;
-using Lab1_6.Data;
+﻿using Lab1_6.Data;
 using Lab1_6.Kafka;
 using Lab1_6.Models;
+using Lab1_6.NotifierSvc.Subscribers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Lab1_6.Billing.Svc
+namespace Lab1_6.NotifierSvc
 {
     class Program
     {
@@ -38,7 +38,8 @@ namespace Lab1_6.Billing.Svc
                         .AddEntityFrameworkNpgsql()
                         .AddDbContext<UsersDbContext>(options => options.UseNpgsql(config.UsersDB))
                         .AddScoped(typeof(KafkaProducer<>))
-                        .AddHostedService<UserCreatedSubscriber>();
+                        .AddHostedService<OrderCreatedSubscriber>()
+                        .AddHostedService<OrderFailedSubscriber>();
                 });
         }
     }

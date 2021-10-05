@@ -1,0 +1,8 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Kafka.Contracts.Billing";
+
+message Charged {
+    int32 OrderId = 1;
+    int32 NewSum = 2;
+}  

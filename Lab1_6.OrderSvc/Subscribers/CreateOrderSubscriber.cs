@@ -13,15 +13,18 @@ namespace Lab1_6.OrderSvc.Subscribers
 {
     public class CreateOrderSubscriber : KafkaSubscriber<CreateOrder>
     {
+        KafkaProducer<OrderRequested> _orderRequestedKafkaProducer;
         ILogger<CreateOrderSubscriber> _logger;
         UsersDbContext _usersDbContext;
 
         public CreateOrderSubscriber(
-            ILogger<CreateOrderSubscriber> logger, AppConfigs config, UsersDbContext usersDbContext)
+            ILogger<CreateOrderSubscriber> logger, AppConfigs config, UsersDbContext usersDbContext, 
+            KafkaProducer<OrderRequested> orderRequestedKafkaProducer)
             :base (logger, config)
         {
             _logger = logger;
             _usersDbContext = usersDbContext;
+            _orderRequestedKafkaProducer = orderRequestedKafkaProducer;
         }
 
         public override string GroupId => "BillingSvc";
@@ -59,6 +62,13 @@ namespace Lab1_6.OrderSvc.Subscribers
             _usersDbContext.Add(orderRequest);
             
             await _usersDbContext.SaveChangesAsync();
+
+            await _orderRequestedKafkaProducer.Send(Topics.Order_OrderRequested, new OrderRequested()
+            {
+                OrderId = order.Id,
+                UserName = order.UserName,
+                Sum = order.Sum
+            });
 
             _logger.LogInformation($"{typeof(CreateOrderSubscriber)} Order with Id='{order.Id}' for UserName='{message.UserName}' created.");
         }
