@@ -2,7 +2,7 @@
 
 option csharp_namespace = "Lab1_6.Kafka.Contracts.Orders";
 
-message OrderCreated {
+message OrderChargeRequested {
     string UserName = 1;
     int32 Sum = 2;
     int32 OrderId = 3;

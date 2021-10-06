@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 
 namespace Lab1_6.BillingSvc.Subscribers
 {
-    public class OrderRequestedSubscriber : KafkaSubscriber<OrderRequested>
+    public class OrderChargeRequestedSubscriber : KafkaSubscriber<OrderRequested>
     {
-        ILogger<OrderRequestedSubscriber> _logger;
+        ILogger<OrderChargeRequestedSubscriber> _logger;
         UsersDbContext _usersDbContext;
         KafkaProducer<Charged> _chargedKafkaProducer;
         KafkaProducer<ChargeFailed> _chargeFailedKafkaProducer;
 
-        public OrderRequestedSubscriber(
-            ILogger<OrderRequestedSubscriber> logger, 
+        public OrderChargeRequestedSubscriber(
+            ILogger<OrderChargeRequestedSubscriber> logger, 
             AppConfigs config, 
             UsersDbContext usersDbContext, 
             KafkaProducer<Charged> chargedKafkaProducer, 
@@ -41,7 +41,7 @@ namespace Lab1_6.BillingSvc.Subscribers
 
         protected override async Task ProcessMessage(OrderRequested message)
         {
-            _logger.LogDebug($"{typeof(OrderRequestedSubscriber)} Message recieved: UserName='{message.UserName}', Sum='{message.Sum}'.");
+            _logger.LogDebug($"{typeof(OrderChargeRequestedSubscriber)} Message recieved: UserName='{message.UserName}', Sum='{message.Sum}'.");
 
             var account = await _usersDbContext.Accounts.FirstOrDefaultAsync(a => a.UserName == message.UserName);
 
@@ -57,7 +57,7 @@ namespace Lab1_6.BillingSvc.Subscribers
                     CurrentSum = account.Deposit,
                 });
 
-                _logger.LogInformation($"{typeof(OrderRequestedSubscriber)} Sum '{message.Sum}' for UserName='{message.UserName}' can't charge. Current value is '{account.Deposit}'.");
+                _logger.LogInformation($"{typeof(OrderChargeRequestedSubscriber)} Sum '{message.Sum}' for UserName='{message.UserName}' can't charge. Current value is '{account.Deposit}'.");
 
                 return;
             }
@@ -72,7 +72,7 @@ namespace Lab1_6.BillingSvc.Subscribers
                 NewSum = account.Deposit,
             });
 
-            _logger.LogInformation($"{typeof(OrderRequestedSubscriber)} Sum '{message.Sum}' for UserName='{message.UserName}' has charged. New value is '{account.Deposit}'.");
+            _logger.LogInformation($"{typeof(OrderChargeRequestedSubscriber)} Sum '{message.Sum}' for UserName='{message.UserName}' has charged. New value is '{account.Deposit}'.");
         }
     }
 }

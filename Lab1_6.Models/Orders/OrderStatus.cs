@@ -2,10 +2,10 @@
 {
     public enum OrderStatus
     {
+        PendingWarehouseAndDeliveryCommit,
         PendingWarehouseCommit,
         PendingDeliveryCommit,
         PendingBillingCommit,
-        Creating,
         Cancelled,
         Created
     }

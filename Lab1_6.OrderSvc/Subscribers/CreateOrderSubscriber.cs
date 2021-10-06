@@ -4,8 +4,7 @@ using Lab1_6.Kafka;
 using Lab1_6.Kafka.Contracts;
 using Lab1_6.Kafka.Contracts.Orders;
 using Lab1_6.Models;
-using Lab1_6.Models.Orders;
-using Microsoft.EntityFrameworkCore;
+using Lab1_6.Models.Sagas;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
@@ -13,21 +12,18 @@ namespace Lab1_6.OrderSvc.Subscribers
 {
     public class CreateOrderSubscriber : KafkaSubscriber<CreateOrder>
     {
-        KafkaProducer<OrderRequested> _orderRequestedKafkaProducer;
+        CreateOrderSaga _createOrderSaga;
         ILogger<CreateOrderSubscriber> _logger;
-        UsersDbContext _usersDbContext;
 
         public CreateOrderSubscriber(
-            ILogger<CreateOrderSubscriber> logger, AppConfigs config, UsersDbContext usersDbContext, 
-            KafkaProducer<OrderRequested> orderRequestedKafkaProducer)
+            ILogger<CreateOrderSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
             :base (logger, config)
         {
             _logger = logger;
-            _usersDbContext = usersDbContext;
-            _orderRequestedKafkaProducer = orderRequestedKafkaProducer;
+            _createOrderSaga = createOrderSaga;
         }
 
-        public override string GroupId => "BillingSvc";
+        public override string GroupId => "OrderSvc";
 
         public override string Topic => Topics.Order_CreateOrder;
 
@@ -37,40 +33,7 @@ namespace Lab1_6.OrderSvc.Subscribers
         {
             _logger.LogDebug($"{typeof(CreateOrderSubscriber)} Message recieved: UserName='{message.UserName}'.");
 
-            var existingOrder = await _usersDbContext.OrderRequests
-                .FirstOrDefaultAsync(r => r.RequestId == message.RequestId);
-
-            if (existingOrder != null)
-            {
-                _logger.LogInformation($"{typeof(CreateOrderSubscriber)} Message with RequestId='{message.RequestId}' for UserName='{message.UserName}'  has been processed already and this message is ignored.");
-                return;
-            }
-
-            var order = new Order()
-            {
-                Status = OrderStatus.Creating,
-                Sum = message.Sum,
-                UserName = message.UserName
-            };
-
-            var orderRequest = new OrderRequest()
-            {
-                Order = order,
-                RequestId = message.RequestId
-            };
-
-            _usersDbContext.Add(orderRequest);
-            
-            await _usersDbContext.SaveChangesAsync();
-
-            await _orderRequestedKafkaProducer.Send(Topics.Order_OrderRequested, new OrderRequested()
-            {
-                OrderId = order.Id,
-                UserName = order.UserName,
-                Sum = order.Sum
-            });
-
-            _logger.LogInformation($"{typeof(CreateOrderSubscriber)} Order with Id='{order.Id}' for UserName='{message.UserName}' created.");
+            await _createOrderSaga.CreateOrder(message);
         }
     }
 }
