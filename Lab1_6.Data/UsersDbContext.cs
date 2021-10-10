@@ -1,7 +1,9 @@
 ﻿using Lab1_6.Models;
 using Lab1_6.Models.Billing;
+using Lab1_6.Models.Delivery;
 using Lab1_6.Models.Notifications;
 using Lab1_6.Models.Orders;
+using Lab1_6.Models.Warehouse;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab1_6.Data
@@ -17,6 +19,8 @@ namespace Lab1_6.Data
         public DbSet<OrderRequest> OrderRequests { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<EmailNotification> EmailNotifications { get; set; }
+        public DbSet<WarehouseReservation> WarehouseReservations { get; set; }
+        public DbSet<CourierReservation> CourierReservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,6 +55,12 @@ namespace Lab1_6.Data
             modelBuilder.Entity<Order>()
                 .Property(a => a.Timestamp)
                 .IsRowVersion();
+
+            modelBuilder.Entity<WarehouseReservation>()
+                .HasKey(o => o.OrderId);
+
+            modelBuilder.Entity<CourierReservation>()
+                .HasKey(o => o.OrderId);
         }
     }
 }

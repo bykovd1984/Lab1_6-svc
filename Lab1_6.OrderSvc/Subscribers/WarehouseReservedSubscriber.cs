@@ -14,9 +14,11 @@ namespace Lab1_6.OrderSvc.Subscribers
     {
         CreateOrderSaga _createOrderSaga;
 
-        public WarehouseReservedSubscriber(ILogger<WarehouseReservedSubscriber> logger, AppConfigs config)
-            :base (logger, config)
-        { }
+        public WarehouseReservedSubscriber(ILogger<WarehouseReservedSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
+            : base(logger, config)
+        {
+            _createOrderSaga = createOrderSaga;
+        }
 
         public override string GroupId => "OrderSvc";
 

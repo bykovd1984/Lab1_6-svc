@@ -13,9 +13,11 @@ namespace Lab1_6.OrderSvc.Subscribers
     {
         CreateOrderSaga _createOrderSaga;
 
-        public ChargeFailedSubscriber(ILogger<ChargeFailedSubscriber> logger, AppConfigs config)
-            :base (logger, config)
-        { }
+        public ChargeFailedSubscriber(ILogger<ChargeFailedSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
+            : base(logger, config)
+        {
+            _createOrderSaga = createOrderSaga;
+        }
 
         public override string GroupId => "OrderSvc";
 

@@ -1,6 +1,7 @@
 ﻿using Lab1_6.Data;
 using Lab1_6.Kafka;
 using Lab1_6.Models;
+using Lab1_6.Models.Sagas;
 using Lab1_6.OrderSvc.Subscribers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,9 +39,14 @@ namespace Lab1_6.OrderSvc
                         .AddEntityFrameworkNpgsql()
                         .AddDbContext<UsersDbContext>(options => options.UseNpgsql(config.UsersDB))
                         .AddScoped(typeof(KafkaProducer<>))
+                        .AddScoped<CreateOrderSaga>()
+                        .AddHostedService<CreateOrderSubscriber>()
+                        .AddHostedService<WarehouseReservedSubscriber>()
+                        .AddHostedService<WarehouseReservationFailedSubscriber>()
+                        .AddHostedService<CourierReservedSubscriber>()
+                        .AddHostedService<CourierReservationFailedSubscriber>()
                         .AddHostedService<ChargedSubscriber>()
-                        .AddHostedService<ChargeFailedSubscriber>()
-                        .AddHostedService<CreateOrderSubscriber>();
+                        .AddHostedService<ChargeFailedSubscriber>();
                 });
         }
     }

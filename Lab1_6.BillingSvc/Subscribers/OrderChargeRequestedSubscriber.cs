@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_6.BillingSvc.Subscribers
 {
-    public class OrderChargeRequestedSubscriber : KafkaSubscriber<OrderRequested>
+    public class OrderChargeRequestedSubscriber : KafkaSubscriber<OrderChargeRequested>
     {
         ILogger<OrderChargeRequestedSubscriber> _logger;
         UsersDbContext _usersDbContext;
@@ -35,11 +35,11 @@ namespace Lab1_6.BillingSvc.Subscribers
 
         public override string GroupId => "BillingSvc";
 
-        public override string Topic => Topics.Order_OrderRequested;
+        public override string Topic => Topics.Order_OrderChargeRequested;
 
-        public override MessageParser<OrderRequested> Parser => OrderRequested.Parser;
+        public override MessageParser<OrderChargeRequested> Parser => OrderChargeRequested.Parser;
 
-        protected override async Task ProcessMessage(OrderRequested message)
+        protected override async Task ProcessMessage(OrderChargeRequested message)
         {
             _logger.LogDebug($"{typeof(OrderChargeRequestedSubscriber)} Message recieved: UserName='{message.UserName}', Sum='{message.Sum}'.");
 

@@ -12,5 +12,7 @@
         public static string Billing_ChargeFailed => "Billing.ChargeFailed";
         public static string Warehouse_Reserved => "Warehouse.Reserved";
         public static string Warehouse_ReservationFailed => "Warehouse.ReservationFailed";
+        public static string Delivery_CourierReserved => "Delivery.CourierReserved";
+        public static string Delivery_CourierReservationFailed => "Delivery.CourierReservationFailed";
     }
 }

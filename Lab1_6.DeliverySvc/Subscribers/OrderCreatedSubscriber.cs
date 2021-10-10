@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Lab1_6.WarehouseSvc.Subscribers
+namespace Lab1_6.DeliverySvc.Subscribers
 {
     public class OrderCreatedSubscriber : KafkaSubscriber<OrderCreated>
     {
@@ -24,7 +24,7 @@ namespace Lab1_6.WarehouseSvc.Subscribers
             _usersDbContext = usersDbContext;
         }
 
-        public override string GroupId => "WarehouseSvc";
+        public override string GroupId => "DeliverySvc";
 
         public override string Topic => Topics.Order_OrderCreated;
 

@@ -1,14 +1,14 @@
 ﻿using Lab1_6.Data;
+using Lab1_6.DeliverySvc.Subscribers;
 using Lab1_6.Kafka;
 using Lab1_6.Models;
-using Lab1_6.WarehouseSvc.Subscribers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace Lab1_6.Lab1_6.WarehouseSvc
+namespace Lab1_6.Lab1_6.DeliverySvc
 {
     class Program
     {

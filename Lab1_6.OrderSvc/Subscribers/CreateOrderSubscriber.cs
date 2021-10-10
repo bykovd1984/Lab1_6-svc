@@ -13,13 +13,11 @@ namespace Lab1_6.OrderSvc.Subscribers
     public class CreateOrderSubscriber : KafkaSubscriber<CreateOrder>
     {
         CreateOrderSaga _createOrderSaga;
-        ILogger<CreateOrderSubscriber> _logger;
 
         public CreateOrderSubscriber(
             ILogger<CreateOrderSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
-            :base (logger, config)
+            : base(logger, config)
         {
-            _logger = logger;
             _createOrderSaga = createOrderSaga;
         }
 

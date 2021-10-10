@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Lab1_6.NotifierSvc.Subscribers
 {
-    public class OrderCreatedSubscriber : KafkaSubscriber<OrderCretated>
+    public class OrderCreatedSubscriber : KafkaSubscriber<OrderCreated>
     {
         ILogger<OrderCreatedSubscriber> _logger;
         UsersDbContext _usersDbContext;
@@ -27,9 +27,9 @@ namespace Lab1_6.NotifierSvc.Subscribers
 
         public override string Topic => Topics.Order_OrderCreated;
 
-        public override MessageParser<OrderCretated> Parser => OrderCretated.Parser;
+        public override MessageParser<OrderCreated> Parser => OrderCreated.Parser;
 
-        protected override async Task ProcessMessage(OrderCretated message)
+        protected override async Task ProcessMessage(OrderCreated message)
         {
             var emailNotification = new EmailNotification()
             {

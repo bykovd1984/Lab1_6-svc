@@ -98,7 +98,7 @@ namespace Lab1_6.Models.Sagas
             }
         }
 
-        public async Task HandleDeliveryCommit(int orderId)
+        public async Task HandleCourierReserved(int orderId)
         {
             lock (_lock)
             {
@@ -169,6 +169,26 @@ namespace Lab1_6.Models.Sagas
                 {
                     case OrderStatus.PendingWarehouseAndDeliveryCommit:
                     case OrderStatus.PendingWarehouseCommit:
+                        order.Status = OrderStatus.Cancelled;
+                        _usersDbContext.SaveChanges();
+                        SendOrderFailedAsync(order).Wait();
+                        break;
+                    default:
+                        return;
+                }
+            }
+        }
+
+        public async Task HandleCourierReservationFailed(int orderId)
+        {
+            lock (_lock)
+            {
+                var order = _usersDbContext.Orders.Find(orderId);
+
+                switch (order.Status)
+                {
+                    case OrderStatus.PendingWarehouseAndDeliveryCommit:
+                    case OrderStatus.PendingDeliveryCommit:
                         order.Status = OrderStatus.Cancelled;
                         _usersDbContext.SaveChanges();
                         SendOrderFailedAsync(order).Wait();

@@ -14,13 +14,15 @@ namespace Lab1_6.OrderSvc.Subscribers
     {
         CreateOrderSaga _createOrderSaga;
 
-        public WarehouseReservationFailedSubscriber(ILogger<WarehouseReservationFailedSubscriber> logger, AppConfigs config)
-            :base (logger, config)
-        { }
+        public WarehouseReservationFailedSubscriber(ILogger<WarehouseReservationFailedSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
+            : base(logger, config)
+        {
+            _createOrderSaga = createOrderSaga;
+        }
 
         public override string GroupId => "OrderSvc";
 
-        public override string Topic => Topics.Warehouse_Reserved;
+        public override string Topic => Topics.Warehouse_ReservationFailed;
 
         public override MessageParser<ReservationFailed> Parser => ReservationFailed.Parser;
 

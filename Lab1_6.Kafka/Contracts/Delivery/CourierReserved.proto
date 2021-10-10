@@ -1,0 +1,7 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Lab1_6.Kafka.Contracts.Delivery";
+
+message CourierReserved {
+    int32 OrderId = 1;
+}  

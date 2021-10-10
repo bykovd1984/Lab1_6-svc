@@ -2,7 +2,6 @@
 using Google.Protobuf;
 using Lab1_6.Models;
 using Lab1_6.Proto;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,7 +12,7 @@ namespace Lab1_6.Kafka
 {
     public abstract class KafkaSubscriber<T> : IHostedService where T : Google.Protobuf.IMessage<T>
     {
-        ILogger _logger;
+        protected ILogger _logger;
         ConsumerConfig _consumerConfig;
         IConsumer<Ignore, T> _consumer;
         AppConfigs _config;

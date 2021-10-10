@@ -14,9 +14,11 @@ namespace Lab1_6.OrderSvc.Subscribers
         CreateOrderSaga _createOrderSaga;
 
         public ChargedSubscriber(
-            ILogger<ChargedSubscriber> logger, AppConfigs config)
-            :base (logger, config)
-        { }
+            ILogger<ChargedSubscriber> logger, AppConfigs config, CreateOrderSaga createOrderSaga)
+            : base(logger, config)
+        {
+            _createOrderSaga = createOrderSaga;
+        }
 
         public override string GroupId => "OrderSvc";
 
