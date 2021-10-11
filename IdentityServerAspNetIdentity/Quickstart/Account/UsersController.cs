@@ -5,6 +5,7 @@ using Lab1_6.Kafka.Contracts.IdentityServer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Threading.Tasks;
 
 namespace IdentityServerAspNetIdentity.Quickstart.Account
@@ -33,8 +34,17 @@ namespace IdentityServerAspNetIdentity.Quickstart.Account
 
             var result = await _userManager.CreateAsync(user, inputUser.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
+            {
+                Log.Information($"User '{user.UserName}' created.");
+
                 await _kafkaProducer.Send(Topics.IdentityServer_UserCreated, new UserCreated() { UserName = user.UserName });
+                Log.Information($"DELIVERED: User '{user.UserName}' created.");
+            }
+            else
+            {
+                Log.Error($"User '{user.UserName}' creation failed.");
+            }
 
             return result;
         }

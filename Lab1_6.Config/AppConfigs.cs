@@ -26,7 +26,7 @@ namespace Lab1_6.Models
 
             var pass = configuration.GetSection("USERS_DB_PASSWORD")?.Value;
 
-            if (!string.IsNullOrEmpty(pass))
+            if (!string.IsNullOrEmpty(pass) && !string.IsNullOrEmpty(connStr))
                 connStr = connStr.Replace("{passwrord_placeholder}", pass);
 
             if (string.IsNullOrEmpty(connStr))
